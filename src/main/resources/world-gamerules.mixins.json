@@ -1,0 +1,24 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.drex.world_gamerules.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "me.drex.world_gamerules.util.WGRMixinConfigPlugin",
+  "mixins": [
+    "gamerules.send_command_feedback.CommandSourceStackMixin",
+    "EnumRuleCommandMixin",
+    "GameRuleCommandMixin",
+    "GameRulesAccessor",
+    "GameRulesValueAccessor",
+    "ServerLevelMixin",
+    "gamerules.do_daylight_cycle.ServerLevelMixin",
+    "gamerules.keep_inventory.ServerPlayerMixin",
+    "gamerules.max_command_chain_length.ExecutionContextMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "gamerules.do_daylight_cycle.ClientLevelMixin"
+  ]
+}
