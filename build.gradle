@@ -7,7 +7,9 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url "https://maven.nucleoid.xyz/" }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -17,6 +19,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation include(fabricApi.module("fabric-command-api-v2", project.fabric_version))
     modImplementation include("me.lucko:fabric-permissions-api:${project.permission_api_version}")
+    modImplementation include("com.github.DrexHD:message-api:${project.message_api_version}")
     modCompileOnly fabricApi.module("fabric-game-rule-api-v1", project.fabric_version)
 }
 

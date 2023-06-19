@@ -1,0 +1,5 @@
+{
+  "world-gamerules.commands.gamerule.set": "<lang:commands.gamerule.set:'<green>${gamerule}':'<green>${value}'> <gray><italic>in all dimensions",
+  "world-gamerules.commands.gamerule.query": "<lang:commands.gamerule.query:'<green>${gamerule}':'<green>${value}'> <gray><italic> in %world:id%",
+  "world-gamerules.commands.worldgamerule.set": "<lang:commands.gamerule.set:'<green>${gamerule}':'<green>${value}'> <gray><italic> in %world:id%"
+}
