@@ -2,7 +2,7 @@ package me.drex.world_gamerules.mixin;
 
 import com.mojang.brigadier.context.CommandContext;
 import eu.pb4.placeholders.api.PlaceholderContext;
-import me.drex.message.api.Message;
+import me.drex.message.api.LocalizedMessage;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.commands.GameRuleCommand;
@@ -33,7 +33,7 @@ public abstract class GameRuleCommandMixin {
         }
         assert value != null;
         T finalValue = value;
-        src.sendSuccess(() -> Message.message("world-gamerules.commands.gamerule.set", Map.of(
+        src.sendSuccess(() -> LocalizedMessage.localized("world-gamerules.commands.gamerule.set", Map.of(
             "gamerule", Component.literal(key.getId()),
             "value", Component.literal(finalValue.toString())
         )), true);
@@ -47,7 +47,7 @@ public abstract class GameRuleCommandMixin {
     @Overwrite
     static <T extends GameRules.Value<T>> int queryRule(CommandSourceStack src, GameRules.Key<T> key) {
         T value = src.getLevel().getGameRules().getRule(key);
-        src.sendSuccess(() -> Message.message("world-gamerules.commands.gamerule.query", Map.of(
+        src.sendSuccess(() -> LocalizedMessage.localized("world-gamerules.commands.gamerule.query", Map.of(
             "gamerule", Component.literal(key.getId()),
             "value", Component.literal(value.toString())
         ), PlaceholderContext.of(src)), false);

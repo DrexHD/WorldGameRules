@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import eu.pb4.placeholders.api.PlaceholderContext;
-import me.drex.message.api.Message;
+import me.drex.message.api.LocalizedMessage;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -34,7 +34,7 @@ public class WorldGameRuleCommand {
         CommandSourceStack src = commandContext.getSource();
         T value = src.getLevel().getGameRules().getRule(key);
         value.setFromArgument(commandContext, "value");
-        src.sendSuccess(() -> Message.message("world-gamerules.commands.worldgamerule.set", Map.of(
+        src.sendSuccess(() -> LocalizedMessage.localized("world-gamerules.commands.worldgamerule.set", Map.of(
             "gamerule", Component.literal(key.getId()),
             "value", Component.literal(value.toString())
         ), PlaceholderContext.of(src)), true);
