@@ -5,15 +5,15 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "me.drex.world_gamerules.util.WGRMixinConfigPlugin",
   "mixins": [
-    "gamerules.send_command_feedback.CommandSourceStackMixin",
+    "CommandsMixin",
     "EnumRuleCommandMixin",
-    "GameRuleCommandMixin",
     "GameRulesAccessor",
     "GameRulesValueAccessor",
     "ServerLevelMixin",
     "gamerules.do_daylight_cycle.ServerLevelMixin",
     "gamerules.keep_inventory.ServerPlayerMixin",
-    "gamerules.max_command_chain_length.ExecutionContextMixin"
+    "gamerules.max_command_chain_length.ExecutionContextMixin",
+    "gamerules.send_command_feedback.CommandSourceStackMixin"
   ],
   "injectors": {
     "defaultRequire": 1

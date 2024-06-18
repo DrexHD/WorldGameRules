@@ -1,7 +1,16 @@
-# World GameRules
-World GameRules is a simple fabric mod that changes all gamerules to be separate per world!
+# WorldGameRules
+A fabric mod to change all gamerules to be separate per world
 
 ## Commands
-- `/gamerule` query command has been changed to send the gamerule value of your current world
+The vanilla gamerule command has been replaced with a custom command that requires a dimension.
+The gamerule command requires `world-gamerules.commands.gamerule` or operator level 2.
 
-- `/worldgamerule` (permission: `world-gamerules.commands.worldgamerule`) has been added to set gamerules in specifiec worlds!
+- `/gamerule [dimension selector] <rule>` - Query the gamerule `<rule>` in all specified dimensions
+- `/gamerule [dimension selector] <rule> <value>` - Set the gamerule `<rule>` to `<value>` in all specified dimensions
+
+### Dimension selectors
+Dimension selectors allow you to specify what dimensions should be queried / set
+- `@all` - Selects all dimensions
+- `@namespace <namespace>` - Selects dimensions with the specified namespace (eg. namespace `minecraft` selects `minecraft:overworld`, `minecraft:the_nether` and `minecraft:the_end`, but not `custom:dimension`)
+- `@regex <regex>` - Selects all dimensions, where the dimension id matches the [regex](https://regex101.com/)
+- `<dimension id>` - To select a specific dimension

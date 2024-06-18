@@ -12,15 +12,18 @@ repositories {
 }
 
 dependencies {
-    // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
     modImplementation include(fabricApi.module("fabric-command-api-v2", project.fabric_version))
+    // Handle mods passing a null DataFixTypes to a PersistentState.Type
+    modImplementation include(fabricApi.module("fabric-object-builder-api-v1", project.fabric_version))
     modImplementation include("me.lucko:fabric-permissions-api:${project.permission_api_version}")
     modImplementation include("com.github.DrexHD:message-api:${project.message_api_version}")
     modImplementation include("eu.pb4:placeholder-api:${project.placeholder_api_version}")
-    modCompileOnly fabricApi.module("fabric-game-rule-api-v1", project.fabric_version)
+    // Compat
+    modImplementation fabricApi.module("fabric-game-rule-api-v1", project.fabric_version)
 }
 
 processResources {
@@ -29,11 +32,5 @@ processResources {
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version
-    }
-}
-
-jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
     }
 }
