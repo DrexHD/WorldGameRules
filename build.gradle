@@ -1,5 +1,9 @@
+import org.jetbrains.changelog.Changelog
+
 plugins {
     id 'fabric-loom' version '1.7-SNAPSHOT'
+    id "me.modmuss50.mod-publish-plugin" version "0.+"
+    id 'org.jetbrains.changelog' version '2.+'
 }
 
 version = "${mod_version}+${minecraft_version}"
@@ -32,5 +36,41 @@ processResources {
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version
+    }
+}
+
+publishMods {
+    file = remapJar.archiveFile
+    changelog = fetchChangelog()
+    type = STABLE
+    displayName = "WorldGameRules ${version.get()}"
+    modLoaders.add("fabric")
+    modLoaders.add("quilt")
+    modrinth {
+        projectId = "Eie2vf4W"
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        minecraftVersions.add(project.minecraft_version)
+    }
+    curseforge {
+        projectId = "1039751"
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+        minecraftVersions.add(project.minecraft_version)
+    }
+    github {
+        accessToken = providers.environmentVariable("GITHUB_TOKEN")
+        repository = providers.environmentVariable("GITHUB_REPOSITORY").getOrElse("DrexHD/dryrun")
+        commitish = providers.environmentVariable("GITHUB_REF_NAME").getOrElse("dryrun")
+    }
+}
+
+private String fetchChangelog() {
+    def log = getChangelog.changelog.get()
+    if (log.has(project.mod_version)) {
+        return log.renderItem(
+                log.get(project.mod_version).withHeader(false),
+                Changelog.OutputType.MARKDOWN
+        )
+    } else {
+        return ""
     }
 }
