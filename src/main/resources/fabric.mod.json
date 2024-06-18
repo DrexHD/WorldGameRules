@@ -8,6 +8,7 @@
     "Drex"
   ],
   "license": "MIT",
+  "icon": "assets/world_gamerules/icon.png",
   "environment": "server",
   "entrypoints": {
     "server": [
