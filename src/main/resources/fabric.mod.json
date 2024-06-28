@@ -9,9 +9,9 @@
   ],
   "license": "MIT",
   "icon": "assets/world_gamerules/icon.png",
-  "environment": "server",
+  "environment": "*",
   "entrypoints": {
-    "server": [
+    "main": [
       "me.drex.world_gamerules.WorldGameRulesMod"
     ]
   },
