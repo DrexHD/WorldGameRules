@@ -23,7 +23,9 @@ dependencies {
     modImplementation include(fabricApi.module("fabric-command-api-v2", project.fabric_version))
     // Handle mods passing a null DataFixTypes to a PersistentState.Type
     modImplementation include(fabricApi.module("fabric-object-builder-api-v1", project.fabric_version))
-    modImplementation include("me.lucko:fabric-permissions-api:${project.permission_api_version}")
+    modImplementation include("me.lucko:fabric-permissions-api:${project.permission_api_version}"){
+        exclude group: "net.fabricmc.fabric-api"
+    }
     modImplementation include("com.github.DrexHD:message-api:${project.message_api_version}")
     modImplementation include("eu.pb4:placeholder-api:${project.placeholder_api_version}")
     // Compat

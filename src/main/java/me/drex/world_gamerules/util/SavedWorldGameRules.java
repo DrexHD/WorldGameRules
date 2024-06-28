@@ -18,12 +18,12 @@ public class SavedWorldGameRules extends SavedData {
         this.worldGameRules = worldGameRules;
     }
 
-    public static SavedWorldGameRules load(CompoundTag compoundTag, HolderLookup.Provider provider) {
+    public static SavedWorldGameRules load(CompoundTag compoundTag) {
         return new SavedWorldGameRules(new WorldGameRules(compoundTag));
     }
 
     @Override
-    public @NotNull CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
+    public @NotNull CompoundTag save(CompoundTag compoundTag) {
         ((GameRulesAccessor) worldGameRules).getRules().forEach((key, value) -> compoundTag.putString(key.getId(), value.serialize()));
         return compoundTag;
     }

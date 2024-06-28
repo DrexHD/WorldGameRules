@@ -7,12 +7,14 @@ import me.drex.message.api.LocalizedMessage;
 import me.drex.world_gamerules.command.selector.*;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.GameRules;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.minecraft.commands.Commands.literal;
@@ -62,16 +64,16 @@ public class WorldGameRuleCommand {
         MutableComponent list = ComponentUtils.formatList(levels, LocalizedMessage.localized("world-gamerules.commands.gamerule.get.list.separator"), level -> {
             T value = level.getGameRules().getRule(key);
             commandResult.addAndGet(value.getCommandResult());
-            return LocalizedMessage.builder("world-gamerules.commands.gamerule.get.list.element")
-                .addPlaceholder("value", value.toString())
-                .addPlaceholder("dimension", level.dimension().location().toString())
-                .build();
+            return LocalizedMessage.localized("world-gamerules.commands.gamerule.get.list.element", Map.of(
+                    "value", Component.literal(value.toString()),
+                    "dimension", Component.literal(level.dimension().location().toString())
+                ));
         });
 
-        src.sendSuccess(() -> LocalizedMessage.builder("world-gamerules.commands.gamerule.get")
-            .addPlaceholder("gamerule", key.getId())
-            .addPlaceholder("list", list)
-            .build(), true);
+        src.sendSuccess(() -> LocalizedMessage.localized("world-gamerules.commands.gamerule.get", Map.of(
+                "gamerule", Component.literal(key.getId()),
+                "list", list
+            )), true);
         return commandResult.get();
     }
 
@@ -91,11 +93,11 @@ public class WorldGameRuleCommand {
         }
 
         String finalStringValue = stringValue;
-        src.sendSuccess(() -> LocalizedMessage.builder("world-gamerules.commands.gamerule.set")
-            .addPlaceholder("gamerule", key.getId())
-            .addPlaceholder("value", finalStringValue)
-            .addPlaceholder("dimensions", levels.size())
-            .build(), true);
+        src.sendSuccess(() -> LocalizedMessage.localized("world-gamerules.commands.gamerule.set", Map.of(
+                "gamerule", Component.literal(key.getId()),
+                "value", Component.literal(finalStringValue),
+                "dimensions", Component.literal(String.valueOf(levels.size()))
+            )), true);
         return commandResult;
     }
 
