@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2024-07-03
+### Fixed
+- Incompatibility with adventure-platform-fabric
+
 ## [1.1.0] - 2024-06-28
 ### Changed
 - WorldGameRules can now be used in singleplayer
