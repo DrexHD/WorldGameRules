@@ -9,7 +9,9 @@ import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.GameRules;
 
 import java.util.Collection;
@@ -30,7 +32,7 @@ public class WorldGameRuleCommand {
         LiteralArgumentBuilder<CommandSourceStack> gamerule = literal("gamerule").requires(Permissions.require("world-gamerules.commands.gamerule", 2));
         for (DimensionSelector dimensionSelector : dimensionSelectors) {
             DimensionSelector.Builders builders = dimensionSelector.builder();
-            GameRules.visitGameRuleTypes(new GameRules.GameRuleTypeVisitor() {
+            new GameRules(FeatureFlags.REGISTRY.allFlags()).visitGameRuleTypes(new GameRules.GameRuleTypeVisitor() {
                 @Override
                 public <T extends GameRules.Value<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type) {
                     builders.second().then(

@@ -1,7 +1,6 @@
 package me.drex.world_gamerules;
 
 import me.drex.world_gamerules.command.WorldGameRuleCommand;
-import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 

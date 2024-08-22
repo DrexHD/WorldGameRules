@@ -3,15 +3,17 @@ package me.drex.world_gamerules.util;
 import me.drex.world_gamerules.mixin.GameRulesValueAccessor;
 import me.drex.world_gamerules.mixin.GameRulesAccessor;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.GameRules;
 
 public class WorldGameRules extends GameRules {
 
-    public WorldGameRules() {
+    public WorldGameRules(FeatureFlagSet featureFlagSet) {
+        super(featureFlagSet);
     }
 
-    public WorldGameRules(CompoundTag compoundTag) {
-        super();
+    public WorldGameRules(FeatureFlagSet featureFlagSet, CompoundTag compoundTag) {
+        super(featureFlagSet);
         loadFromCompoundTag(compoundTag);
     }
 
