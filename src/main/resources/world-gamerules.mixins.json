@@ -17,8 +17,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "client": [
-    "gamerules.do_daylight_cycle.ClientLevelMixin"
-  ]
+  }
 }
