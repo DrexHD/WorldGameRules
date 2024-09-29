@@ -8,7 +8,7 @@ public class WorldGameRulesMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> WorldGameRuleCommand.register(dispatcher));
+        CommandRegistrationCallback.EVENT.register((dispatcher, context, environment) -> WorldGameRuleCommand.register(dispatcher, context));
     }
 
 }

@@ -6,12 +6,11 @@ import com.mojang.brigadier.context.CommandContext;
 import me.drex.message.api.LocalizedMessage;
 import me.drex.world_gamerules.command.selector.*;
 import me.lucko.fabric.api.permissions.v0.Permissions;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.GameRules;
 
 import java.util.Collection;
@@ -21,7 +20,7 @@ import static net.minecraft.commands.Commands.literal;
 
 public class WorldGameRuleCommand {
 
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context) {
         DimensionSelector[] dimensionSelectors = new DimensionSelector[]{
             new AllDimensions(),
             new NamespaceDimensions(),
@@ -32,7 +31,7 @@ public class WorldGameRuleCommand {
         LiteralArgumentBuilder<CommandSourceStack> gamerule = literal("gamerule").requires(Permissions.require("world-gamerules.commands.gamerule", 2));
         for (DimensionSelector dimensionSelector : dimensionSelectors) {
             DimensionSelector.Builders builders = dimensionSelector.builder();
-            new GameRules(FeatureFlags.REGISTRY.allFlags()).visitGameRuleTypes(new GameRules.GameRuleTypeVisitor() {
+            new GameRules(context.enabledFeatures()).visitGameRuleTypes(new GameRules.GameRuleTypeVisitor() {
                 @Override
                 public <T extends GameRules.Value<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type) {
                     builders.second().then(
