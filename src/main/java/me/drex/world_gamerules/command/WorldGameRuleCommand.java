@@ -1,5 +1,6 @@
 package me.drex.world_gamerules.command;
 
+import com.google.common.collect.Lists;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -29,22 +30,37 @@ public class WorldGameRuleCommand {
 
         LiteralArgumentBuilder<CommandSourceStack> gamerule = literal("gamerule").requires(Permissions.require("world-gamerules.commands.gamerule", 2));
         for (DimensionSelector dimensionSelector : dimensionSelectors) {
-            DimensionSelector.Builders builders = dimensionSelector.builder();
+            DimensionSelector.Builders getRule = dimensionSelector.builder();
+            DimensionSelector.Builders setRule = dimensionSelector.builder();
             GameRules.visitGameRuleTypes(new GameRules.GameRuleTypeVisitor() {
                 @Override
                 public <T extends GameRules.Value<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type) {
-                    builders.second().then(
-                        literal(key.getId()).then(
-                            type.createArgument("value").executes(ctx -> setRule(ctx, dimensionSelector.getLevels(ctx), key))
-                        ).executes(ctx -> getRule(ctx, dimensionSelector.getLevels(ctx), key))
+                    // gamerule <gamerule> <dimension_selector>
+                    getRule.second().executes(ctx -> getRule(ctx, dimensionSelector.getLevels(ctx), key));
+                    // gamerule <gamerule> <value> <dimension_selector>
+                    setRule.second().executes(ctx -> setRule(ctx, dimensionSelector.getLevels(ctx), key));
+
+                    // Support for dimension selectors with two arguments
+                    getRule.connect();
+                    setRule.connect();
+
+                    gamerule.then(
+                        literal(key.getId())
+                            // gamerule <gamerule>
+                            .executes(ctx -> getRule(ctx, Lists.newArrayList(ctx.getSource().getServer().getAllLevels()), key))
+                            .then(
+                                type.createArgument("value")
+                                    // gamerule <gamerule> <value>
+                                    .executes(ctx -> setRule(ctx, Lists.newArrayList(ctx.getSource().getServer().getAllLevels()), key))
+                                    .then(
+                                        setRule.first()
+                                    )
+                            ).then(
+                                getRule.first()
+                            )
                     );
                 }
             });
-            // Support for dimension selectors with two arguments
-            if (builders.first() != builders.second()) {
-                builders.first().then(builders.second());
-            }
-            gamerule.then(builders.first());
         }
 
         dispatcher.register(gamerule);
