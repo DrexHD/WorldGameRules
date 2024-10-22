@@ -18,6 +18,12 @@ public interface DimensionSelector {
         Builders(ArgumentBuilder<CommandSourceStack, ?> builder) {
             this(builder, builder);
         }
+
+        public void connect() {
+            if (first() != second()) {
+                first().then(second());
+            }
+        }
     }
 
 }

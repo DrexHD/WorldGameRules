@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2024-10-10
+### Changed
+- Gamerule command syntax
+
 ## [1.1.1] - 2024-07-03
 ### Fixed
 - Incompatibility with adventure-platform-fabric

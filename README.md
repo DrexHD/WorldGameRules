@@ -5,8 +5,8 @@ A fabric mod to change all gamerules to be separate per world
 The vanilla gamerule command has been replaced with a custom command that requires a dimension.
 The gamerule command requires `world-gamerules.commands.gamerule` or operator level 2.
 
-- `/gamerule [dimension selector] <rule>` - Query the gamerule `<rule>` in all specified dimensions
-- `/gamerule [dimension selector] <rule> <value>` - Set the gamerule `<rule>` to `<value>` in all specified dimensions
+- `/gamerule <rule> [dimension selector]` - Query the gamerule `<rule>` in all specified dimensions
+- `/gamerule <rule> <value> [dimension selector]` - Set the gamerule `<rule>` to `<value>` in all specified dimensions
 
 ### Dimension selectors
 Dimension selectors allow you to specify what dimensions should be queried / set
