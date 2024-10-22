@@ -54,7 +54,7 @@ publishMods {
     curseforge {
         projectId = "1039751"
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
-        minecraftVersions.add(project.minecraft_version)
+        minecraftVersions.add(project.curseforge_minecraft_version)
     }
     github {
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
