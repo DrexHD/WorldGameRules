@@ -31,7 +31,7 @@ public class WorldGameRuleCommand {
 
         LiteralArgumentBuilder<CommandSourceStack> gamerule = literal("gamerule").requires(Permissions.require("world-gamerules.commands.gamerule", 2));
         for (DimensionSelector dimensionSelector : dimensionSelectors) {
-new GameRules(context.enabledFeatures()).visitGameRuleTypes(new GameRules.GameRuleTypeVisitor() {
+            new GameRules(context.enabledFeatures()).visitGameRuleTypes(new GameRules.GameRuleTypeVisitor() {
                 @Override
                 public <T extends GameRules.Value<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type) {
                     DimensionSelector.Builders getRule = dimensionSelector.builder();

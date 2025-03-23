@@ -19,10 +19,9 @@ public class WorldGameRules extends GameRules {
 
     private void loadFromCompoundTag(CompoundTag compoundTag) {
         ((GameRulesAccessor)this).getRules().forEach((key, value) -> {
-            if (compoundTag.contains(key.getId())) {
-                String data = compoundTag.getString(key.getId());
+            compoundTag.getString(key.getId()).ifPresent(data -> {
                 ((GameRulesValueAccessor<?>)value).deserialize(data);
-            }
+            });
         });
     }
 
