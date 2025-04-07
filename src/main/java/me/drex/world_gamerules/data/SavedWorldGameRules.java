@@ -1,4 +1,4 @@
-package me.drex.world_gamerules.util;
+package me.drex.world_gamerules.data;
 
 import com.mojang.serialization.Codec;
 import me.drex.world_gamerules.mixin.GameRulesAccessor;
@@ -38,11 +38,6 @@ public class SavedWorldGameRules extends SavedData {
         CompoundTag compoundTag = new CompoundTag();
         ((GameRulesAccessor) worldGameRules).getRules().forEach((key, value) -> compoundTag.putString(key.getId(), value.serialize()));
         return compoundTag;
-    }
-
-    @Override
-    public boolean isDirty() {
-        return true;
     }
 
     public WorldGameRules getWorldGameRules() {

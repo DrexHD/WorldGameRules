@@ -1,4 +1,4 @@
-package me.drex.world_gamerules.util;
+package me.drex.world_gamerules.data;
 
 import me.drex.world_gamerules.mixin.GameRulesValueAccessor;
 import me.drex.world_gamerules.mixin.GameRulesAccessor;

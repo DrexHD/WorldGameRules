@@ -1,6 +1,7 @@
 package me.drex.world_gamerules.mixin;
 
-import me.drex.world_gamerules.util.SavedWorldGameRules;
+import me.drex.world_gamerules.data.SavedWorldGameRules;
+import me.drex.world_gamerules.duck.IServerLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
@@ -28,7 +29,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 @Mixin(ServerLevel.class)
-public abstract class ServerLevelMixin extends Level {
+public abstract class ServerLevelMixin extends Level implements IServerLevel {
 
     protected ServerLevelMixin(WritableLevelData writableLevelData, ResourceKey<Level> resourceKey, RegistryAccess registryAccess, Holder<DimensionType> holder, boolean bl, boolean bl2, long l, int i) {
         super(writableLevelData, resourceKey, registryAccess, holder, bl, bl2, l, i);
@@ -58,6 +59,11 @@ public abstract class ServerLevelMixin extends Level {
         @Nullable RandomSequences randomSequences, CallbackInfo ci
     ) {
         worldGameRules = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldGameRules.TYPE);
+    }
+
+    @Override
+    public SavedWorldGameRules worldGameRules$savedWorldGameRules() {
+        return this.worldGameRules;
     }
 
     /**
