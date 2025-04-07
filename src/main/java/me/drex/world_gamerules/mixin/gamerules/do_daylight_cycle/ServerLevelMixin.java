@@ -1,5 +1,6 @@
 package me.drex.world_gamerules.mixin.gamerules.do_daylight_cycle;
 
+import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import me.drex.world_gamerules.duck.IServerLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -24,16 +25,24 @@ import java.util.function.Supplier;
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin extends Level implements IServerLevel {
 
-    protected ServerLevelMixin(WritableLevelData writableLevelData, ResourceKey<Level> resourceKey, RegistryAccess registryAccess, Holder<DimensionType> holder, Supplier<ProfilerFiller> supplier, boolean bl, boolean bl2, long l, int i) {
-        super(writableLevelData, resourceKey, registryAccess, holder, supplier, bl, bl2, l, i);
-    }
-
     @Shadow
     @Final
     private boolean tickTime;
 
     @Shadow
     public abstract void setDayTime(long l);
+
+    protected ServerLevelMixin(WritableLevelData writableLevelData, ResourceKey<Level> resourceKey, RegistryAccess registryAccess, Holder<DimensionType> holder, Supplier<ProfilerFiller> supplier, boolean bl, boolean bl2, long l, int i) {
+        super(writableLevelData, resourceKey, registryAccess, holder, supplier, bl, bl2, l, i);
+    }
+
+    @ModifyReceiver(
+        method = {"tickTime", "tick"},
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/WritableLevelData;getDayTime()J")
+    )
+    public WritableLevelData perWorldDayTime(WritableLevelData instance) {
+        return this.worldGameRules$savedWorldLevelData();
+    }
 
     @Inject(
         method = "tickTime",
