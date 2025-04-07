@@ -6,8 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2025-04-07
+### Fixed
+- Per world daylight cycle related bugs
+
 ## [1.3.0] - 2025-04-07
-### Add
+### Added
 - Per world weather and time
 
 ## [1.2.1] - 2025-02-12
