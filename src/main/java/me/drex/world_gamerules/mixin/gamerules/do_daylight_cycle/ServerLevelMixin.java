@@ -44,6 +44,17 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
         return this.worldGameRules$savedWorldLevelData();
     }
 
+    @Redirect(
+        method = "tickTime",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/storage/ServerLevelData;getGameRules()Lnet/minecraft/world/level/GameRules;"
+        )
+    )
+    public GameRules perWorldDayTime(ServerLevelData instance) {
+        return this.getGameRules();
+    }
+
     @Inject(
         method = "tickTime",
         at = @At("HEAD")
