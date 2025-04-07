@@ -42,7 +42,7 @@ processResources {
 publishMods {
     file = remapJar.archiveFile
     changelog = fetchChangelog()
-    type = STABLE
+    type = BETA
     displayName = "WorldGameRules ${version.get()}"
     modLoaders.add("fabric")
     modLoaders.add("quilt")

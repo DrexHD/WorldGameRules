@@ -1,6 +1,7 @@
 package me.drex.world_gamerules.mixin;
 
 import me.drex.world_gamerules.data.SavedWorldGameRules;
+import me.drex.world_gamerules.data.SavedWorldLevelData;
 import me.drex.world_gamerules.duck.IServerLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -45,6 +46,9 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
     @Unique
     private SavedWorldGameRules worldGameRules;
 
+    @Unique
+    private SavedWorldLevelData savedWorldLevelData;
+
     @Inject(
         method = "<init>",
         at = @At(
@@ -59,11 +63,17 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
         @Nullable RandomSequences randomSequences, CallbackInfo ci
     ) {
         worldGameRules = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldGameRules.TYPE);
+        savedWorldLevelData = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldLevelData.TYPE);
     }
 
     @Override
     public SavedWorldGameRules worldGameRules$savedWorldGameRules() {
         return this.worldGameRules;
+    }
+
+    @Override
+    public SavedWorldLevelData worldGameRules$savedWorldLevelData() {
+        return this.savedWorldLevelData;
     }
 
     /**
