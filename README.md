@@ -14,3 +14,6 @@ Dimension selectors allow you to specify what dimensions should be queried / set
 - `@namespace <namespace>` - Selects dimensions with the specified namespace (eg. namespace `minecraft` selects `minecraft:overworld`, `minecraft:the_nether` and `minecraft:the_end`, but not `custom:dimension`)
 - `@regex <regex>` - Selects all dimensions, where the dimension id matches the [regex](https://regex101.com/)
 - `<dimension id>` - To select a specific dimension
+
+## Misc
+To implement `doDaylightCycle` and `doWeatherCycle` gamerules this mod allows worlds to have separate, independent weather and day cycles.
