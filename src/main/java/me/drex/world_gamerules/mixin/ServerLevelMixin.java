@@ -1,6 +1,7 @@
 package me.drex.world_gamerules.mixin;
 
 import me.drex.world_gamerules.data.SavedWorldGameRules;
+import me.drex.world_gamerules.data.SavedWorldLevelData;
 import me.drex.world_gamerules.duck.IServerLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -24,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
@@ -46,6 +48,9 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
     @Unique
     private SavedWorldGameRules worldGameRules;
 
+    @Unique
+    private SavedWorldLevelData savedWorldLevelData;
+
     @Inject(
         method = "<init>",
         at = @At(
@@ -59,11 +64,21 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
                 () -> new SavedWorldGameRules(enabledFeatures()),
                 (compoundTag, provider) -> SavedWorldGameRules.load(enabledFeatures(), compoundTag), null
             ), "gamerules");
+        savedWorldLevelData = this.chunkSource.getDataStorage()
+            .computeIfAbsent(new SavedData.Factory<>(
+                SavedWorldLevelData::new,
+                (compoundTag, provider) -> SavedWorldLevelData.load(compoundTag), null
+            ), "world_level_data");
     }
 
     @Override
     public SavedWorldGameRules worldGameRules$savedWorldGameRules() {
         return this.worldGameRules;
+    }
+
+    @Override
+    public SavedWorldLevelData worldGameRules$savedWorldLevelData() {
+        return this.savedWorldLevelData;
     }
 
     /**

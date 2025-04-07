@@ -7,11 +7,14 @@
   "mixins": [
     "CommandsMixin",
     "EnumRuleCommandMixin",
-    "GameRulesAccessor",
     "GameRules$ValueMixin",
+    "GameRulesAccessor",
     "GameRulesValueAccessor",
     "ServerLevelMixin",
+    "gamerules.do_daylight_cycle.LevelMixin",
     "gamerules.do_daylight_cycle.ServerLevelMixin",
+    "gamerules.do_weather_cycle.ServerLevelMixin",
+    "gamerules.do_weather_cycle.WeatherCommandMixin",
     "gamerules.keep_inventory.ServerPlayerMixin",
     "gamerules.max_command_chain_length.ExecutionContextMixin",
     "gamerules.send_command_feedback.CommandSourceStackMixin"
