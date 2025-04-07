@@ -1,6 +1,7 @@
 package me.drex.world_gamerules.mixin;
 
-import me.drex.world_gamerules.util.SavedWorldGameRules;
+import me.drex.world_gamerules.data.SavedWorldGameRules;
+import me.drex.world_gamerules.duck.IServerLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
@@ -8,7 +9,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.progress.ChunkProgressListener;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.RandomSequences;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.CustomSpawner;
@@ -28,28 +28,30 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 import java.util.concurrent.Executor;
-import java.util.function.Supplier;
 
 @Mixin(ServerLevel.class)
-public abstract class ServerLevelMixin extends Level {
+public abstract class ServerLevelMixin extends Level implements IServerLevel {
 
     protected ServerLevelMixin(WritableLevelData writableLevelData, ResourceKey<Level> resourceKey, RegistryAccess registryAccess, Holder<DimensionType> holder, boolean bl, boolean bl2, long l, int i) {
         super(writableLevelData, resourceKey, registryAccess, holder, bl, bl2, l, i);
     }
 
-    @Shadow @Final private ServerChunkCache chunkSource;
+    @Shadow
+    @Final
+    private ServerChunkCache chunkSource;
 
-    @Shadow public abstract FeatureFlagSet enabledFeatures();
+    @Shadow
+    public abstract FeatureFlagSet enabledFeatures();
 
     @Unique
     private SavedWorldGameRules worldGameRules;
 
     @Inject(
-            method = "<init>",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/chunk/ChunkGeneratorStructureState;ensureStructuresGenerated()V"
-            )
+        method = "<init>",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/chunk/ChunkGeneratorStructureState;ensureStructuresGenerated()V"
+        )
     )
     public void registerWorldGameRulesStorage(MinecraftServer minecraftServer, Executor executor, LevelStorageSource.LevelStorageAccess levelStorageAccess, ServerLevelData serverLevelData, ResourceKey<Level> resourceKey, LevelStem levelStem, ChunkProgressListener chunkProgressListener, boolean bl, long l, List<CustomSpawner> list, boolean bl2, @Nullable RandomSequences randomSequences, CallbackInfo ci) {
         worldGameRules = this.chunkSource.getDataStorage()
@@ -57,6 +59,11 @@ public abstract class ServerLevelMixin extends Level {
                 () -> new SavedWorldGameRules(enabledFeatures()),
                 (compoundTag, provider) -> SavedWorldGameRules.load(enabledFeatures(), compoundTag), null
             ), "gamerules");
+    }
+
+    @Override
+    public SavedWorldGameRules worldGameRules$savedWorldGameRules() {
+        return this.worldGameRules;
     }
 
     /**
