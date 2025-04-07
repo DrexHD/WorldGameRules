@@ -1,4 +1,4 @@
-package me.drex.world_gamerules.util;
+package me.drex.world_gamerules.data;
 
 import me.drex.world_gamerules.mixin.GameRulesAccessor;
 import net.minecraft.core.HolderLookup;
@@ -26,11 +26,6 @@ public class SavedWorldGameRules extends SavedData {
     public @NotNull CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
         ((GameRulesAccessor) worldGameRules).getRules().forEach((key, value) -> compoundTag.putString(key.getId(), value.serialize()));
         return compoundTag;
-    }
-
-    @Override
-    public boolean isDirty() {
-        return true;
     }
 
     public WorldGameRules getWorldGameRules() {

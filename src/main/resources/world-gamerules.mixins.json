@@ -8,6 +8,7 @@
     "CommandsMixin",
     "EnumRuleCommandMixin",
     "GameRulesAccessor",
+    "GameRules$ValueMixin",
     "GameRulesValueAccessor",
     "ServerLevelMixin",
     "gamerules.do_daylight_cycle.ServerLevelMixin",
