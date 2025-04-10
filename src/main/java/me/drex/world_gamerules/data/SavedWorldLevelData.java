@@ -31,6 +31,11 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
         SavedWorldLevelData::load,
         SavedWorldLevelData::save);
     public static final SavedDataType<SavedWorldLevelData> TYPE = new SavedDataType<>("world_level_data", context -> new SavedWorldLevelData(), CODEC, null);
+    private ServerLevelData parent;
+
+    public void setParent(ServerLevelData parent) {
+        this.parent = parent;
+    }
 
     public CompoundTag save() {
         CompoundTag compoundTag = new CompoundTag();
@@ -56,7 +61,7 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
 
     @Override
     public String getLevelName() {
-        throw new UnsupportedOperationException();
+        return parent.getLevelName();
     }
 
     @Override
@@ -100,77 +105,77 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
 
     @Override
     public int getWanderingTraderSpawnDelay() {
-        throw new UnsupportedOperationException();
+        return parent.getWanderingTraderSpawnDelay();
     }
 
     @Override
     public void setWanderingTraderSpawnDelay(int i) {
-        throw new UnsupportedOperationException();
+        parent.setWanderingTraderSpawnDelay(i);
     }
 
     @Override
     public int getWanderingTraderSpawnChance() {
-        throw new UnsupportedOperationException();
+        return parent.getWanderingTraderSpawnChance();
     }
 
     @Override
     public void setWanderingTraderSpawnChance(int i) {
-        throw new UnsupportedOperationException();
+        parent.setWanderingTraderSpawnChance(i);
     }
 
     @Override
     public @Nullable UUID getWanderingTraderId() {
-        throw new UnsupportedOperationException();
+        return parent.getWanderingTraderId();
     }
 
     @Override
     public void setWanderingTraderId(UUID uUID) {
-        throw new UnsupportedOperationException();
+        parent.setWanderingTraderId(uUID);
     }
 
     @Override
     public GameType getGameType() {
-        throw new UnsupportedOperationException();
+        return parent.getGameType();
     }
 
     @Override
     public void setWorldBorder(WorldBorder.Settings settings) {
-        throw new UnsupportedOperationException();
+        parent.setWorldBorder(settings);
     }
 
     @Override
     public WorldBorder.Settings getWorldBorder() {
-        throw new UnsupportedOperationException();
+        return parent.getWorldBorder();
     }
 
     @Override
     public boolean isInitialized() {
-        throw new UnsupportedOperationException();
+        return parent.isInitialized();
     }
 
     @Override
     public void setInitialized(boolean bl) {
-        throw new UnsupportedOperationException();
+        parent.setInitialized(bl);
     }
 
     @Override
     public boolean isAllowCommands() {
-        throw new UnsupportedOperationException();
+        return parent.isAllowCommands();
     }
 
     @Override
     public void setGameType(GameType gameType) {
-        throw new UnsupportedOperationException();
+        parent.setGameType(gameType);
     }
 
     @Override
     public TimerQueue<MinecraftServer> getScheduledEvents() {
-        throw new UnsupportedOperationException();
+        return parent.getScheduledEvents();
     }
 
     @Override
     public void setGameTime(long l) {
-        throw new UnsupportedOperationException();
+        parent.setGameTime(l);
     }
 
     @Override
@@ -181,27 +186,27 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
 
     @Override
     public GameRules getGameRules() {
-        throw new UnsupportedOperationException();
+        return parent.getGameRules();
     }
 
     @Override
     public void setSpawn(BlockPos blockPos, float f) {
-        throw new UnsupportedOperationException();
+        parent.setSpawn(blockPos, f);
     }
 
     @Override
     public BlockPos getSpawnPos() {
-        throw new UnsupportedOperationException();
+        return parent.getSpawnPos();
     }
 
     @Override
     public float getSpawnAngle() {
-        throw new UnsupportedOperationException();
+        return parent.getSpawnAngle();
     }
 
     @Override
     public long getGameTime() {
-        throw new UnsupportedOperationException();
+        return parent.getGameTime();
     }
 
     @Override
@@ -227,17 +232,17 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
 
     @Override
     public boolean isHardcore() {
-        throw new UnsupportedOperationException();
+        return parent.isHardcore();
     }
 
     @Override
     public Difficulty getDifficulty() {
-        throw new UnsupportedOperationException();
+        return parent.getDifficulty();
     }
 
     @Override
     public boolean isDifficultyLocked() {
-        throw new UnsupportedOperationException();
+        return parent.isDifficultyLocked();
     }
 
 }

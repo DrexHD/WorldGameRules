@@ -36,6 +36,9 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
         super(writableLevelData, resourceKey, registryAccess, holder, bl, bl2, l, i);
     }
 
+    @Unique
+    private static final String FANTASY_PACKAGE = "xyz.nucleoid.fantasy";
+
     @Shadow
     @Final
     private ServerChunkCache chunkSource;
@@ -43,11 +46,13 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
     @Shadow
     public abstract FeatureFlagSet enabledFeatures();
 
+    @Mutable
+    @Shadow
+    @Final
+    private ServerLevelData serverLevelData;
     @Unique
     private SavedWorldGameRules worldGameRules;
 
-    @Unique
-    private SavedWorldLevelData savedWorldLevelData;
 
     @Inject(
         method = "<init>",
@@ -63,17 +68,23 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
         @Nullable RandomSequences randomSequences, CallbackInfo ci
     ) {
         worldGameRules = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldGameRules.TYPE);
-        savedWorldLevelData = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldLevelData.TYPE);
+
+        var className = this.getClass().getName();
+        if (className.startsWith(FANTASY_PACKAGE)) {
+            // Fantasy has its own logic to handle per world daylight cycle
+            return;
+        }
+
+        // Replace serverLevelData
+        var savedWorldLevelData = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldLevelData.TYPE);
+        savedWorldLevelData.setParent(this.serverLevelData);
+        this.serverLevelData = savedWorldLevelData;
+        ((LevelAccessor) this).setLevelData(savedWorldLevelData);
     }
 
     @Override
     public SavedWorldGameRules worldGameRules$savedWorldGameRules() {
         return this.worldGameRules;
-    }
-
-    @Override
-    public SavedWorldLevelData worldGameRules$savedWorldLevelData() {
-        return this.savedWorldLevelData;
     }
 
     /**
