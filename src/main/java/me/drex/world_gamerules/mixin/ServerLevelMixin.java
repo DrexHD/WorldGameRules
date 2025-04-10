@@ -23,10 +23,7 @@ import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.level.storage.WritableLevelData;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -42,6 +39,9 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
         super(writableLevelData, resourceKey, registryAccess, holder, supplier, bl, bl2, l, i);
     }
 
+    @Unique
+    private static final String FANTASY_PACKAGE = "xyz.nucleoid.fantasy";
+
     @Shadow
     @Final
     private ServerChunkCache chunkSource;
@@ -49,11 +49,13 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
     @Shadow
     public abstract FeatureFlagSet enabledFeatures();
 
+    @Mutable
+    @Shadow
+    @Final
+    private ServerLevelData serverLevelData;
     @Unique
     private SavedWorldGameRules worldGameRules;
 
-    @Unique
-    private SavedWorldLevelData savedWorldLevelData;
 
     @Inject(
         method = "<init>",
@@ -64,17 +66,23 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
     )
     public void registerWorldGameRulesStorage(MinecraftServer minecraftServer, Executor executor, LevelStorageSource.LevelStorageAccess levelStorageAccess, ServerLevelData serverLevelData, ResourceKey<Level> resourceKey, LevelStem levelStem, ChunkProgressListener chunkProgressListener, boolean bl, long l, List<CustomSpawner> list, boolean bl2, @Nullable RandomSequences randomSequences, CallbackInfo ci) {
         worldGameRules = this.chunkSource.getDataStorage().computeIfAbsent(new SavedData.Factory<>(SavedWorldGameRules::new, SavedWorldGameRules::load, null), "gamerules");
-        savedWorldLevelData = this.chunkSource.getDataStorage().computeIfAbsent(new SavedData.Factory<>(SavedWorldLevelData::new, (tag, provider) -> SavedWorldLevelData.load(tag), null), "world_level_data");
+        
+                var className = this.getClass().getName();
+        if (className.startsWith(FANTASY_PACKAGE)) {
+            // Fantasy has its own logic to handle per world daylight cycle
+            return;
+        }
+
+        // Replace serverLevelData
+        var savedWorldLevelData = this.chunkSource.getDataStorage().computeIfAbsent(new SavedData.Factory<>(SavedWorldLevelData::new, (tag, provider) -> SavedWorldLevelData.load(tag), null), "world_level_data");
+        savedWorldLevelData.setParent(this.serverLevelData);
+        this.serverLevelData = savedWorldLevelData;
+        ((LevelAccessor) this).setLevelData(savedWorldLevelData);
     }
 
     @Override
     public SavedWorldGameRules worldGameRules$savedWorldGameRules() {
         return this.worldGameRules;
-    }
-
-    @Override
-    public SavedWorldLevelData worldGameRules$savedWorldLevelData() {
-        return this.savedWorldLevelData;
     }
 
     @Override
