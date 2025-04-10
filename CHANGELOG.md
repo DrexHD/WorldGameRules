@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.2] - 2025-04-10
+### Changed
+- Improved mod compatibility
+
 ## [1.3.1] - 2025-04-07
 ### Fixed
 - Per world daylight cycle related bugs

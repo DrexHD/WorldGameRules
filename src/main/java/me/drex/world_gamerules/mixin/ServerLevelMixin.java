@@ -25,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
@@ -38,6 +37,9 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
         super(writableLevelData, resourceKey, registryAccess, holder, bl, bl2, l, i);
     }
 
+    @Unique
+    private static final String FANTASY_PACKAGE = "xyz.nucleoid.fantasy";
+
     @Shadow
     @Final
     private ServerChunkCache chunkSource;
@@ -45,11 +47,13 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
     @Shadow
     public abstract FeatureFlagSet enabledFeatures();
 
+    @Mutable
+    @Shadow
+    @Final
+    private ServerLevelData serverLevelData;
     @Unique
     private SavedWorldGameRules worldGameRules;
 
-    @Unique
-    private SavedWorldLevelData savedWorldLevelData;
 
     @Inject(
         method = "<init>",
@@ -64,21 +68,27 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
                 () -> new SavedWorldGameRules(enabledFeatures()),
                 (compoundTag, provider) -> SavedWorldGameRules.load(enabledFeatures(), compoundTag), null
             ), "gamerules");
-        savedWorldLevelData = this.chunkSource.getDataStorage()
+
+        var className = this.getClass().getName();
+        if (className.startsWith(FANTASY_PACKAGE)) {
+            // Fantasy has its own logic to handle per world daylight cycle
+            return;
+        }
+
+        // Replace serverLevelData
+        var savedWorldLevelData = this.chunkSource.getDataStorage()
             .computeIfAbsent(new SavedData.Factory<>(
                 SavedWorldLevelData::new,
                 (compoundTag, provider) -> SavedWorldLevelData.load(compoundTag), null
             ), "world_level_data");
+        savedWorldLevelData.setParent(this.serverLevelData);
+        this.serverLevelData = savedWorldLevelData;
+        ((LevelAccessor) this).setLevelData(savedWorldLevelData);
     }
 
     @Override
     public SavedWorldGameRules worldGameRules$savedWorldGameRules() {
         return this.worldGameRules;
-    }
-
-    @Override
-    public SavedWorldLevelData worldGameRules$savedWorldLevelData() {
-        return this.savedWorldLevelData;
     }
 
     /**
