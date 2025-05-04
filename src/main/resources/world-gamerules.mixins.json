@@ -13,6 +13,7 @@
     "LevelAccessor",
     "ServerLevelMixin",
     "gamerules.do_daylight_cycle.ServerLevelMixin",
+    "gamerules.do_daylight_cycle.TimeCommandMixin",
     "gamerules.do_weather_cycle.ServerLevelMixin",
     "gamerules.do_weather_cycle.WeatherCommandMixin",
     "gamerules.keep_inventory.ServerPlayerMixin",
