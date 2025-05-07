@@ -1,5 +1,7 @@
 package me.drex.world_gamerules.data;
 
+import me.drex.world_gamerules.util.CCACompat;
+import me.drex.world_gamerules.util.ModCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +27,17 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     private boolean thundering;
     private int thunderTime;
 
-    private ServerLevelData parent;
+    protected ServerLevelData parent;
+
+    protected SavedWorldLevelData() {
+    }
+
+    public static SavedWorldLevelData of() {
+        if (ModCompat.CARDINAL_COMPONENTS_LEVEL) {
+            return CCACompat.create();
+        }
+        return new SavedWorldLevelData();
+    }
 
     public void setParent(ServerLevelData parent) {
         this.parent = parent;
@@ -43,7 +55,7 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     }
 
     public static SavedWorldLevelData load(CompoundTag compoundTag) {
-        SavedWorldLevelData data = new SavedWorldLevelData();
+        SavedWorldLevelData data = SavedWorldLevelData.of();
         data.dayTime = compoundTag.getLong("day_time");
         data.clearWeatherTime = compoundTag.getInt("clear_weather_time");
         data.raining = compoundTag.getBoolean("raining");
