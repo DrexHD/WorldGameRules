@@ -78,7 +78,7 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
         // Replace serverLevelData
         var savedWorldLevelData = this.chunkSource.getDataStorage()
             .computeIfAbsent(new SavedData.Factory<>(
-                SavedWorldLevelData::new,
+                SavedWorldLevelData::of,
                 (compoundTag, provider) -> SavedWorldLevelData.load(compoundTag), null
             ), "world_level_data");
         savedWorldLevelData.setParent(this.serverLevelData);

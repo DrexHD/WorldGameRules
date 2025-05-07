@@ -13,6 +13,7 @@ repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     maven { url "https://maven.nucleoid.xyz/" }
     maven { url "https://api.modrinth.com/maven" }
+    maven { url "https://maven.ladysnake.org/releases" }
 }
 
 dependencies {
@@ -28,6 +29,7 @@ dependencies {
     modImplementation include("eu.pb4:placeholder-api:${project.placeholder_api_version}")
     // Compat
     modImplementation fabricApi.module("fabric-game-rule-api-v1", project.fabric_version)
+    modCompileOnly("org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}")
 }
 
 processResources {
