@@ -1,6 +1,8 @@
 package me.drex.world_gamerules.data;
 
 import com.mojang.serialization.Codec;
+import me.drex.world_gamerules.util.CCACompat;
+import me.drex.world_gamerules.util.ModCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
@@ -30,8 +32,18 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     public static final Function<Context, Codec<SavedWorldLevelData>> CODEC = context -> CompoundTag.CODEC.xmap(
         SavedWorldLevelData::load,
         SavedWorldLevelData::save);
-    public static final SavedDataType<SavedWorldLevelData> TYPE = new SavedDataType<>("world_level_data", context -> new SavedWorldLevelData(), CODEC, null);
-    private ServerLevelData parent;
+    public static final SavedDataType<SavedWorldLevelData> TYPE = new SavedDataType<>("world_level_data", context -> SavedWorldLevelData.of(), CODEC, null);
+    protected ServerLevelData parent;
+
+    protected SavedWorldLevelData() {
+    }
+
+    public static SavedWorldLevelData of() {
+        if (ModCompat.CARDINAL_COMPONENTS_LEVEL) {
+            return CCACompat.create();
+        }
+        return new SavedWorldLevelData();
+    }
 
     public void setParent(ServerLevelData parent) {
         this.parent = parent;
@@ -49,7 +61,7 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     }
 
     public static SavedWorldLevelData load(CompoundTag compoundTag) {
-        SavedWorldLevelData data = new SavedWorldLevelData();
+        SavedWorldLevelData data = SavedWorldLevelData.of();
         data.dayTime = compoundTag.getLongOr("day_time", 0);
         data.clearWeatherTime = compoundTag.getIntOr("clear_weather_time", 0);
         data.raining = compoundTag.getBooleanOr("raining", false);

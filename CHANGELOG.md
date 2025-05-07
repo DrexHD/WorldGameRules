@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.4] - 2025-05-07
+### Fixed
+- Incompatibility with Cardinal Components API
+
 ## [1.3.3] - 2025-05-04
 ### Changed
 - `/time` command to work per world
