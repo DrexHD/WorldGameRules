@@ -74,11 +74,8 @@ public class WorldGameRuleCommand {
             return 0;
         }
 
-        AtomicInteger commandResult = new AtomicInteger();
-
         MutableComponent list = ComponentUtils.formatList(levels, LocalizedMessage.localized("world-gamerules.commands.gamerule.get.list.separator"), level -> {
             T value = level.getGameRules().getRule(key);
-            commandResult.addAndGet(value.getCommandResult());
             return LocalizedMessage.builder("world-gamerules.commands.gamerule.get.list.element")
                 .addPlaceholder("value", value.toString())
                 .addPlaceholder("dimension", level.dimension().location().toString())
@@ -89,7 +86,7 @@ public class WorldGameRuleCommand {
             .addPlaceholder("gamerule", key.getId())
             .addPlaceholder("list", list)
             .build(), true);
-        return commandResult.get();
+        return commandContext.getSource().getLevel().getGameRules().getRule(key).getCommandResult();
     }
 
     static <T extends GameRules.Value<T>> int setRule(CommandContext<CommandSourceStack> commandContext, Collection<ServerLevel> levels, GameRules.Key<T> key) {
@@ -100,7 +97,6 @@ public class WorldGameRuleCommand {
         }
 
         String stringValue = "";
-        int commandResult = 0;
         for (ServerLevel level : levels) {
             T value = level.getGameRules().getRule(key);
             value.setFromArgument(commandContext, "value");
@@ -113,7 +109,7 @@ public class WorldGameRuleCommand {
             .addPlaceholder("value", finalStringValue)
             .addPlaceholder("dimensions", levels.size())
             .build(), true);
-        return commandResult;
+        return commandContext.getSource().getLevel().getGameRules().getRule(key).getCommandResult();
     }
 
 }
