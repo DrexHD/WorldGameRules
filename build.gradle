@@ -16,6 +16,12 @@ repositories {
     maven { url "https://maven.ladysnake.org/releases" }
 }
 
+loom {
+    runConfigs.all {
+        ideConfigGenerated(true)
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()

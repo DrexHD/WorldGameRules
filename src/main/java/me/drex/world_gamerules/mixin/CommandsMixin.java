@@ -15,10 +15,14 @@ public abstract class CommandsMixin {
         method = "<init>",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/server/commands/GameRuleCommand;register(Lcom/mojang/brigadier/CommandDispatcher;Lnet/minecraft/commands/CommandBuildContext;)V"
+            //? if >= 1.21.4 {
+            /*target = "Lnet/minecraft/server/commands/GameRuleCommand;register(Lcom/mojang/brigadier/CommandDispatcher;Lnet/minecraft/commands/CommandBuildContext;)V"
+            *///?} else {
+            target = "Lnet/minecraft/server/commands/GameRuleCommand;register(Lcom/mojang/brigadier/CommandDispatcher;)V"
+            //?}
         )
     )
-    private void disableVanillaGameRuleCommand(CommandDispatcher<CommandSourceStack> commandDispatcher, CommandBuildContext commandBuildContext) {
+    private void disableVanillaGameRuleCommand(CommandDispatcher<CommandSourceStack> commandDispatcher/*? if >= 1.21.4 {*//*, CommandBuildContext commandBuildContext*//*?}*/) {
         // noop
     }
 
