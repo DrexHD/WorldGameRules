@@ -18,10 +18,10 @@ public abstract class ServerPlayerMixin {
         at = @At(
             value = "INVOKE",
             //? if >= 1.21.4 {
-            /*target = "Lnet/minecraft/server/level/ServerLevel;getGameRules()Lnet/minecraft/world/level/GameRules;"
-            *///?} else {
-            target = "Lnet/minecraft/world/level/Level;getGameRules()Lnet/minecraft/world/level/GameRules;"
-            //?}
+            target = "Lnet/minecraft/server/level/ServerLevel;getGameRules()Lnet/minecraft/world/level/GameRules;"
+            //?} else {
+            /*target = "Lnet/minecraft/world/level/Level;getGameRules()Lnet/minecraft/world/level/GameRules;"
+            *///?}
         )
     )
     public GameRules useOriginalWorldGameRules(@Coerce Object instance, ServerPlayer oldPlayer) {

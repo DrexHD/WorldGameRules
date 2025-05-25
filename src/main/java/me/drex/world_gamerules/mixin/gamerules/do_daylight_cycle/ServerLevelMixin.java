@@ -23,14 +23,14 @@ import java.util.function.Supplier;
 
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin extends Level {
-    protected ServerLevelMixin(WritableLevelData writableLevelData, ResourceKey<Level> resourceKey, RegistryAccess registryAccess, Holder<DimensionType> holder/*? if < 1.21.4 {*/, Supplier<ProfilerFiller> supplier /*?}*/, boolean bl, boolean bl2, long l, int i) {
-        super(writableLevelData, resourceKey, registryAccess, holder/*? if < 1.21.4 {*/, supplier/*?}*/, bl, bl2, l, i);
+    protected ServerLevelMixin(WritableLevelData writableLevelData, ResourceKey<Level> resourceKey, RegistryAccess registryAccess, Holder<DimensionType> holder/*? if < 1.21.4 {*//*, Supplier<ProfilerFiller> supplier *//*?}*/, boolean bl, boolean bl2, long l, int i) {
+        super(writableLevelData, resourceKey, registryAccess, holder/*? if < 1.21.4 {*//*, supplier*//*?}*/, bl, bl2, l, i);
     }
 
     //? if >= 1.21.4 {
-    /*@Shadow
+    @Shadow
     public abstract GameRules getGameRules();
-    *///?}
+    //?}
 
     @Shadow
     @Final
@@ -44,10 +44,10 @@ public abstract class ServerLevelMixin extends Level {
         at = @At(
             value = "INVOKE",
             //? if >= 1.21.4 {
-            /*target = "Lnet/minecraft/world/level/storage/ServerLevelData;getGameRules()Lnet/minecraft/world/level/GameRules;"
-            *///?} else {
-            target = "Lnet/minecraft/world/level/storage/WritableLevelData;getGameRules()Lnet/minecraft/world/level/GameRules;"
-            //?}
+            target = "Lnet/minecraft/world/level/storage/ServerLevelData;getGameRules()Lnet/minecraft/world/level/GameRules;"
+            //?} else {
+            /*target = "Lnet/minecraft/world/level/storage/WritableLevelData;getGameRules()Lnet/minecraft/world/level/GameRules;"
+            *///?}
         )
     )
     public GameRules perWorldDayTime(@Coerce Object instance) {

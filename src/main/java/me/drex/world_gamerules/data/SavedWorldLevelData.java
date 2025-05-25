@@ -13,8 +13,8 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.saveddata.SavedData;
 //? if >= 1.21.5 {
-/*import net.minecraft.world.level.saveddata.SavedDataType;
-*///?}
+import net.minecraft.world.level.saveddata.SavedDataType;
+//?}
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.level.timers.TimerQueue;
 import org.jetbrains.annotations.NotNull;
@@ -34,11 +34,11 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     private int thunderTime;
 
     //? if >= 1.21.5 {
-    /*public static final Function<Context, Codec<SavedWorldLevelData>> CODEC = context -> CompoundTag.CODEC.xmap(
+    public static final Function<Context, Codec<SavedWorldLevelData>> CODEC = context -> CompoundTag.CODEC.xmap(
         SavedWorldLevelData::load,
         SavedWorldLevelData::save);
     public static final SavedDataType<SavedWorldLevelData> TYPE = new SavedDataType<>("world_level_data", context -> SavedWorldLevelData.of(), CODEC, null);
-    *///?}
+    //?}
     protected ServerLevelData parent;
 
     protected SavedWorldLevelData() {
@@ -56,12 +56,12 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     }
 
     //? if >= 1.21.5 {
-    /*public @NotNull CompoundTag save() {
+    public @NotNull CompoundTag save() {
         CompoundTag compoundTag = new CompoundTag();
-    *///?} else {
-    @Override
+    //?} else {
+    /*@Override
     public @NotNull CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
-    //?}
+    *///?}
         compoundTag.putLong("day_time", dayTime);
         compoundTag.putInt("clear_weather_time", clearWeatherTime);
         compoundTag.putBoolean("raining", raining);
@@ -74,20 +74,20 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     public static SavedWorldLevelData load(CompoundTag compoundTag) {
         SavedWorldLevelData data = SavedWorldLevelData.of();
         //? if >= 1.21.5 {
-        /*data.dayTime = compoundTag.getLongOr("day_time", 0);
+        data.dayTime = compoundTag.getLongOr("day_time", 0);
         data.clearWeatherTime = compoundTag.getIntOr("clear_weather_time", 0);
         data.raining = compoundTag.getBooleanOr("raining", false);
         data.rainTime = compoundTag.getIntOr("rain_time", 0);
         data.thundering = compoundTag.getBooleanOr("thundering", false);
         data.thunderTime = compoundTag.getIntOr("thunder_time", 0);
-        *///?} else {
-        data.dayTime = compoundTag.getLong("day_time");
+        //?} else {
+        /*data.dayTime = compoundTag.getLong("day_time");
         data.clearWeatherTime = compoundTag.getInt("clear_weather_time");
         data.raining = compoundTag.getBoolean("raining");
         data.rainTime = compoundTag.getInt("rain_time");
         data.thundering = compoundTag.getBoolean("thundering");
         data.thunderTime = compoundTag.getInt("thunder_time");
-        //?}
+        *///?}
         return data;
     }
 

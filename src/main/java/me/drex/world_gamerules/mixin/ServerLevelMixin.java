@@ -35,8 +35,8 @@ import java.util.function.Supplier;
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin extends Level implements IServerLevel {
 
-    protected ServerLevelMixin(WritableLevelData writableLevelData, ResourceKey<Level> resourceKey, RegistryAccess registryAccess, Holder<DimensionType> holder/*? if < 1.21.4 {*/, Supplier<ProfilerFiller> supplier /*?}*/, boolean bl, boolean bl2, long l, int i) {
-        super(writableLevelData, resourceKey, registryAccess, holder/*? if < 1.21.4 {*/, supplier/*?}*/, bl, bl2, l, i);
+    protected ServerLevelMixin(WritableLevelData writableLevelData, ResourceKey<Level> resourceKey, RegistryAccess registryAccess, Holder<DimensionType> holder/*? if < 1.21.4 {*//*, Supplier<ProfilerFiller> supplier *//*?}*/, boolean bl, boolean bl2, long l, int i) {
+        super(writableLevelData, resourceKey, registryAccess, holder/*? if < 1.21.4 {*//*, supplier*//*?}*/, bl, bl2, l, i);
     }
 
     @Unique
@@ -71,14 +71,14 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
         @Nullable RandomSequences randomSequences, CallbackInfo ci
     ) {
         //? if >= 1.21.5 {
-        /*worldGameRules = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldGameRules.TYPE);
-        *///?} else {
-        worldGameRules = this.chunkSource.getDataStorage()
+        worldGameRules = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldGameRules.TYPE);
+        //?} else {
+        /*worldGameRules = this.chunkSource.getDataStorage()
             .computeIfAbsent(new SavedData.Factory<>(
                 () -> new SavedWorldGameRules(enabledFeatures()),
                 (compoundTag, provider) -> SavedWorldGameRules.load(enabledFeatures(), compoundTag), null
             ), "gamerules");
-        //?}
+        *///?}
 
         var className = this.getClass().getName();
         if (className.startsWith(FANTASY_PACKAGE)) {
@@ -88,14 +88,14 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
 
         // Replace serverLevelData
         //? if >= 1.21.5 {
-        /*var savedWorldLevelData = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldLevelData.TYPE);
-        *///?} else {
-        var savedWorldLevelData = this.chunkSource.getDataStorage()
+        var savedWorldLevelData = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldLevelData.TYPE);
+        //?} else {
+        /*var savedWorldLevelData = this.chunkSource.getDataStorage()
             .computeIfAbsent(new SavedData.Factory<>(
                 SavedWorldLevelData::of,
                 (compoundTag, provider) -> SavedWorldLevelData.load(compoundTag), null
             ), "world_level_data");
-        //?}
+        *///?}
         savedWorldLevelData.setParent(this.serverLevelData);
         this.serverLevelData = savedWorldLevelData;
         ((LevelAccessor) this).setLevelData(savedWorldLevelData);
@@ -111,10 +111,10 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
      * @reason Implement per world gamerules
      */
     //? if >= 1.21.4 {
-    /*@Overwrite
-    *///?} else {
-    @Override
-    //?}
+    @Overwrite
+    //?} else {
+    /*@Override
+    *///?}
     public GameRules getGameRules() {
         return worldGameRules.getWorldGameRules();
     }
