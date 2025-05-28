@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.6] - 2025-05-29
 ### Fixed
 - Jar name
+- Compatibility with adventure on 1.21.1 & 1.21.4
 
 ## [1.3.5] - 2025-05-25
 ### Changed
