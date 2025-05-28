@@ -6,6 +6,7 @@ plugins {
     id 'org.jetbrains.changelog' version '2.+'
 }
 
+archivesBaseName = project.archives_base_name
 version = "${mod_version}+${minecraft_version}"
 group = project.maven_group
 
