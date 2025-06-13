@@ -25,7 +25,7 @@ public abstract class ServerPlayerMixin {
         )
     )
     public GameRules useOriginalWorldGameRules(@Coerce Object instance, ServerPlayer oldPlayer) {
-        return oldPlayer.serverLevel().getGameRules();
+        return oldPlayer./*? if >= 1.21.6-rc1 {*/ level() /*?} else {*/ /*serverLevel()*/ /*?}*/.getGameRules();
     }
 
 }
