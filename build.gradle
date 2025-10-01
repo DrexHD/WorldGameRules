@@ -1,13 +1,16 @@
 import org.jetbrains.changelog.Changelog
 
 plugins {
-    id 'fabric-loom' version '1.10-SNAPSHOT'
+    id 'fabric-loom' version '1.11-SNAPSHOT'
     id "me.modmuss50.mod-publish-plugin" version "0.8.4"
 }
 
-archivesBaseName = project.archives_base_name
 version = "${mod_version}+${minecraft_version}"
 group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
 
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
@@ -57,12 +60,12 @@ publishMods {
     modrinth {
         projectId = "Eie2vf4W"
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-        minecraftVersions.add(project.minecraft_version)
+        minecraftVersions.add(project.modrinth_minecraft_versions.split(", "))
     }
     curseforge {
         projectId = "1039751"
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
-        minecraftVersions.add(project.curseforge_minecraft_version)
+        minecraftVersions.add(project.curseforge_minecraft_versions.split(", "))
     }
     github {
         accessToken = providers.environmentVariable("GITHUB_TOKEN")

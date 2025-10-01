@@ -9,7 +9,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.progress.ChunkProgressListener;
+//? if <= 1.21.8 {
+//import net.minecraft.server.level.progress.ChunkProgressListener;
+//? }
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.RandomSequences;
 import net.minecraft.world.flag.FeatureFlagSet;
@@ -67,7 +69,7 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
     public void registerWorldGameRulesStorage(
         MinecraftServer minecraftServer, Executor executor, LevelStorageSource.LevelStorageAccess levelStorageAccess,
         ServerLevelData serverLevelData, ResourceKey<Level> resourceKey, LevelStem levelStem,
-        ChunkProgressListener chunkProgressListener, boolean bl, long l, List<CustomSpawner> list, boolean bl2,
+        /*? if >= 1.21.8 {*//*ChunkProgressListener chunkProgressListener, */ /*?}*/boolean bl, long l, List<CustomSpawner> list, boolean bl2,
         @Nullable RandomSequences randomSequences, CallbackInfo ci
     ) {
         //? if >= 1.21.5 {
@@ -112,9 +114,9 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
      */
     //? if >= 1.21.4 {
     @Overwrite
-    //?} else {
+        //?} else {
     /*@Override
-    *///?}
+     *///?}
     public GameRules getGameRules() {
         return worldGameRules.getWorldGameRules();
     }

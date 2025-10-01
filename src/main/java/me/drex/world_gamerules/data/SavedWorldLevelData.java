@@ -20,6 +20,7 @@ import net.minecraft.world.level.timers.TimerQueue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -171,16 +172,6 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     }
 
     @Override
-    public void setWorldBorder(WorldBorder.Settings settings) {
-        parent.setWorldBorder(settings);
-    }
-
-    @Override
-    public WorldBorder.Settings getWorldBorder() {
-        return parent.getWorldBorder();
-    }
-
-    @Override
     public boolean isInitialized() {
         return parent.isInitialized();
     }
@@ -221,8 +212,27 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
         return parent.getGameRules();
     }
 
+    //? if >= 1.21.9 {
     @Override
-    public void setSpawn(BlockPos blockPos, float f) {
+    public Optional<WorldBorder.Settings> getLegacyWorldBorderSettings() {
+        return parent.getLegacyWorldBorderSettings();
+    }
+
+    @Override
+    public void setLegacyWorldBorderSettings(Optional<WorldBorder.Settings> optional) {
+        parent.setLegacyWorldBorderSettings(optional);
+    }
+
+    @Override
+    public RespawnData getRespawnData() {
+        return parent.getRespawnData();
+    }
+    @Override
+    public void setSpawn(RespawnData respawnData) {
+        parent.setSpawn(respawnData);
+    }
+    //? } else {
+    /*public void setSpawn(BlockPos blockPos, float f) {
         parent.setSpawn(blockPos, f);
     }
 
@@ -235,6 +245,17 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     public float getSpawnAngle() {
         return parent.getSpawnAngle();
     }
+
+    @Override
+    public void setWorldBorder(WorldBorder.Settings settings) {
+        parent.setWorldBorder(settings);
+    }
+
+    @Override
+    public WorldBorder.Settings getWorldBorder() {
+        return parent.getWorldBorder();
+    }*/
+    //? }
 
     @Override
     public long getGameTime() {
