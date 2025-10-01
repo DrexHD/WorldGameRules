@@ -60,12 +60,12 @@ publishMods {
     modrinth {
         projectId = "Eie2vf4W"
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-        minecraftVersions.add(project.modrinth_minecraft_versions.split(", "))
+        minecraftVersions.addAll(project.modrinth_minecraft_versions.split(", "))
     }
     curseforge {
         projectId = "1039751"
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
-        minecraftVersions.add(project.curseforge_minecraft_versions.split(", "))
+        minecraftVersions.addAll(project.curseforge_minecraft_versions.split(", "))
     }
     github {
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
