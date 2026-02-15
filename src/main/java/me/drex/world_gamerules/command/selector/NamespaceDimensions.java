@@ -20,7 +20,11 @@ public class NamespaceDimensions implements DimensionSelector {
     public Builders builder() {
         RequiredArgumentBuilder<CommandSourceStack, String> second = Commands.argument("namespace", StringArgumentType.word()).suggests((context, builder) -> {
             for (ResourceKey<Level> levelResourceKey : context.getSource().getServer().levelKeys()) {
-                builder.suggest(levelResourceKey.location().getNamespace());
+                //? if >= 1.21.11 {
+                builder.suggest(levelResourceKey.identifier().getNamespace());
+                //?} else {
+                /*builder.suggest(levelResourceKey.location().getNamespace());
+                *///?}
             }
             return builder.buildFuture();
         });
@@ -33,7 +37,11 @@ public class NamespaceDimensions implements DimensionSelector {
         String namespace = StringArgumentType.getString(context, "namespace");
         List<ServerLevel> result = new LinkedList<>();
         for (ServerLevel level : context.getSource().getServer().getAllLevels()) {
-            if (level.dimension().location().getNamespace().equals(namespace)) {
+            //? if >= 1.21.11 {
+            if (level.dimension().identifier().getNamespace().equals(namespace)) {
+            //?} else {
+            /*if (level.dimension().location().getNamespace().equals(namespace)) {
+            *///?}
                 result.add(level);
             }
         }

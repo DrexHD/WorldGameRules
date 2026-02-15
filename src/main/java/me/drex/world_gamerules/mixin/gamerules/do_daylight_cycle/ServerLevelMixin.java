@@ -5,7 +5,11 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.level.GameRules;
+//? if >= 1.21.11 {
+import net.minecraft.world.level.gamerules.GameRules;
+        //?} else {
+/*import net.minecraft.world.level.GameRules;
+ *///?}
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.storage.ServerLevelData;
@@ -40,29 +44,37 @@ public abstract class ServerLevelMixin extends Level {
     public abstract void setDayTime(long l);
 
     @Redirect(
-        method = "tickTime",
-        at = @At(
-            value = "INVOKE",
-            //? if >= 1.21.4 {
-            target = "Lnet/minecraft/world/level/storage/ServerLevelData;getGameRules()Lnet/minecraft/world/level/GameRules;"
-            //?} else {
-            /*target = "Lnet/minecraft/world/level/storage/WritableLevelData;getGameRules()Lnet/minecraft/world/level/GameRules;"
-            *///?}
-        )
+            method = "tickTime",
+            at = @At(
+                    value = "INVOKE",
+                    //? if >= 1.21.11 {
+                    target = "Lnet/minecraft/server/level/ServerLevel;getGameRules()Lnet/minecraft/world/level/gamerules/GameRules;"
+                    //?} else if >= 1.21.4 {
+                    /*target = "Lnet/minecraft/world/level/storage/ServerLevelData;getGameRules()Lnet/minecraft/world/level/GameRules;"
+                    *///?} else {
+                    /*target = "Lnet/minecraft/world/level/storage/WritableLevelData;getGameRules()Lnet/minecraft/world/level/GameRules;"
+                    *///?}
+            )
     )
     public GameRules perWorldDayTime(@Coerce Object instance) {
         return this.getGameRules();
     }
 
     @Inject(
-        method = "tickTime",
-        at = @At("HEAD")
+            method = "tickTime",
+            at = @At("HEAD")
     )
     public void tickDayTime(CallbackInfo ci) {
         if (!this.tickTime) {
-            if (getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
+            //? if >= 1.21.11 {
+            if (getGameRules().get(GameRules.ADVANCE_TIME)) {
                 this.setDayTime(this.levelData.getDayTime() + 1L);
             }
+            //?} else {
+            /*if (getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
+                this.setDayTime(this.levelData.getDayTime() + 1L);
+            }
+            *///?}
         }
     }
 }

@@ -7,7 +7,7 @@
   "mixins": [
     "CommandsMixin",
     "EnumRuleCommandMixin",
-    "GameRules$ValueMixin",
+    "GameRuleChangeMixin",
     "GameRulesAccessor",
     "GameRulesValueAccessor",
     "LevelAccessor",

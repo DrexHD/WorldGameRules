@@ -10,13 +10,17 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 //? if <= 1.21.8 {
-//import net.minecraft.server.level.progress.ChunkProgressListener;
-//? }
+/*import net.minecraft.server.level.progress.ChunkProgressListener;
+        *///?}
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.RandomSequences;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.CustomSpawner;
-import net.minecraft.world.level.GameRules;
+//? if >= 1.21.11 {
+import net.minecraft.world.level.gamerules.GameRules;
+ //?} else {
+/*import net.minecraft.world.level.GameRules;
+*///?}
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
@@ -60,26 +64,27 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
 
 
     @Inject(
-        method = "<init>",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/level/chunk/ChunkGeneratorStructureState;ensureStructuresGenerated()V"
-        )
+            method = "<init>",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/level/chunk/ChunkGeneratorStructureState;ensureStructuresGenerated()V"
+            )
     )
     public void registerWorldGameRulesStorage(
-        MinecraftServer minecraftServer, Executor executor, LevelStorageSource.LevelStorageAccess levelStorageAccess,
-        ServerLevelData serverLevelData, ResourceKey<Level> resourceKey, LevelStem levelStem,
-        /*? if >= 1.21.8 {*//*ChunkProgressListener chunkProgressListener, */ /*?}*/boolean bl, long l, List<CustomSpawner> list, boolean bl2,
-        @Nullable RandomSequences randomSequences, CallbackInfo ci
+            MinecraftServer minecraftServer, Executor executor, LevelStorageSource.LevelStorageAccess levelStorageAccess,
+            ServerLevelData serverLevelData, ResourceKey<Level> resourceKey, LevelStem levelStem,
+            /*? if <= 1.21.8 {*//*ChunkProgressListener chunkProgressListener,  *//*?}*/boolean bl, long l, List<CustomSpawner> list, boolean bl2,
+            @Nullable RandomSequences randomSequences, CallbackInfo ci
     ) {
+
         //? if >= 1.21.5 {
         worldGameRules = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldGameRules.TYPE);
-        //?} else {
+         //?} else {
         /*worldGameRules = this.chunkSource.getDataStorage()
-            .computeIfAbsent(new SavedData.Factory<>(
-                () -> new SavedWorldGameRules(enabledFeatures()),
-                (compoundTag, provider) -> SavedWorldGameRules.load(enabledFeatures(), compoundTag), null
-            ), "gamerules");
+                .computeIfAbsent(new SavedData.Factory<>(
+                        () -> new SavedWorldGameRules(enabledFeatures()),
+                        (compoundTag, provider) -> SavedWorldGameRules.load(enabledFeatures(), compoundTag), null
+                ), "gamerules");
         *///?}
 
         var className = this.getClass().getName();
@@ -91,12 +96,12 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
         // Replace serverLevelData
         //? if >= 1.21.5 {
         var savedWorldLevelData = this.chunkSource.getDataStorage().computeIfAbsent(SavedWorldLevelData.TYPE);
-        //?} else {
+         //?} else {
         /*var savedWorldLevelData = this.chunkSource.getDataStorage()
-            .computeIfAbsent(new SavedData.Factory<>(
-                SavedWorldLevelData::of,
-                (compoundTag, provider) -> SavedWorldLevelData.load(compoundTag), null
-            ), "world_level_data");
+                .computeIfAbsent(new SavedData.Factory<>(
+                        SavedWorldLevelData::of,
+                        (compoundTag, provider) -> SavedWorldLevelData.load(compoundTag), null
+                ), "world_level_data");
         *///?}
         savedWorldLevelData.setParent(this.serverLevelData);
         this.serverLevelData = savedWorldLevelData;
@@ -114,9 +119,9 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
      */
     //? if >= 1.21.4 {
     @Overwrite
-        //?} else {
+     //?} else {
     /*@Override
-     *///?}
+            *///?}
     public GameRules getGameRules() {
         return worldGameRules.getWorldGameRules();
     }

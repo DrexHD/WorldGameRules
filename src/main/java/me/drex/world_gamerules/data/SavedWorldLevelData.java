@@ -8,7 +8,11 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.level.GameRules;
+//? if >= 1.21.11 {
+import net.minecraft.world.level.gamerules.GameRules;
+//?} else {
+/*import net.minecraft.world.level.GameRules;
+*///?}
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -34,12 +38,18 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     private boolean thundering;
     private int thunderTime;
 
-    //? if >= 1.21.5 {
-    public static final Function<Context, Codec<SavedWorldLevelData>> CODEC = context -> CompoundTag.CODEC.xmap(
+    //? if >= 1.21.11 {
+    public static final Codec<SavedWorldLevelData> CODEC = CompoundTag.CODEC.xmap(
+            SavedWorldLevelData::load,
+            SavedWorldLevelData::save
+    );
+    public static final SavedDataType<SavedWorldLevelData> TYPE = new SavedDataType<>("world_level_data", SavedWorldLevelData::of, CODEC, null);
+    //?} else if >= 1.21.5 {
+    /*public static final Function<Context, Codec<SavedWorldLevelData>> CODEC = context -> CompoundTag.CODEC.xmap(
         SavedWorldLevelData::load,
         SavedWorldLevelData::save);
     public static final SavedDataType<SavedWorldLevelData> TYPE = new SavedDataType<>("world_level_data", context -> SavedWorldLevelData.of(), CODEC, null);
-    //?}
+    *///?}
     protected ServerLevelData parent;
 
     protected SavedWorldLevelData() {
@@ -231,7 +241,7 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     public void setSpawn(RespawnData respawnData) {
         parent.setSpawn(respawnData);
     }
-    //? } else {
+    //?} else {
     /*public void setSpawn(BlockPos blockPos, float f) {
         parent.setSpawn(blockPos, f);
     }
@@ -254,8 +264,8 @@ public class SavedWorldLevelData extends SavedData implements ServerLevelData {
     @Override
     public WorldBorder.Settings getWorldBorder() {
         return parent.getWorldBorder();
-    }*/
-    //? }
+    }
+    *///?}
 
     @Override
     public long getGameTime() {

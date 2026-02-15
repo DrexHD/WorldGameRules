@@ -25,7 +25,11 @@ public class RegexDimensions implements DimensionSelector {
         String regex = StringArgumentType.getString(context, "regex");
         List<ServerLevel> result = new LinkedList<>();
         for (ServerLevel level : context.getSource().getServer().getAllLevels()) {
-            if (level.dimension().location().toString().matches(regex)) {
+            //? if >= 1.21.11 {
+            if (level.dimension().identifier().toString().matches(regex)) {
+            //?} else {
+            /*if (level.dimension().location().toString().matches(regex)) {
+            *///?}
                 result.add(level);
             }
         }
