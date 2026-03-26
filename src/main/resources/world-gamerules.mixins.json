@@ -1,26 +1,28 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "me.drex.world_gamerules.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "plugin": "me.drex.world_gamerules.util.WGRMixinConfigPlugin",
-  "mixins": [
-    "CommandsMixin",
-    "EnumRuleCommandMixin",
-    "GameRuleChangeMixin",
-    "GameRulesAccessor",
-    "GameRulesValueAccessor",
-    "LevelAccessor",
-    "ServerLevelMixin",
-    "gamerules.do_daylight_cycle.ServerLevelMixin",
-    "gamerules.do_daylight_cycle.TimeCommandMixin",
-    "gamerules.do_weather_cycle.ServerLevelMixin",
-    "gamerules.do_weather_cycle.WeatherCommandMixin",
-    "gamerules.keep_inventory.ServerPlayerMixin",
-    "gamerules.max_command_chain_length.ExecutionContextMixin",
-    "gamerules.send_command_feedback.CommandSourceStackMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+	"required": true,
+	"minVersion": "0.8",
+	"package": "me.drex.world_gamerules.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"plugin": "me.drex.world_gamerules.util.WGRMixinConfigPlugin",
+	"mixins": [
+		"CommandsMixin",
+		"EnumRuleCommandMixin",
+		"GameRuleChangeMixin",
+		"GameRulesAccessor",
+		"GameRulesValueAccessor",
+		"LevelAccessor",
+		"LevelMixin",
+		"ServerLevelMixin",
+		"gamerules.do_daylight_cycle.RuntimeWorldMixin",
+		"gamerules.do_daylight_cycle.ServerLevelMixin",
+		"gamerules.do_daylight_cycle.TimeCommandMixin",
+		"gamerules.do_weather_cycle.ServerLevelMixin",
+		"gamerules.do_weather_cycle.WeatherCommandMixin",
+		"gamerules.keep_inventory.ServerPlayerMixin",
+		"gamerules.max_command_chain_length.ExecutionContextMixin",
+		"gamerules.send_command_feedback.CommandSourceStackMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

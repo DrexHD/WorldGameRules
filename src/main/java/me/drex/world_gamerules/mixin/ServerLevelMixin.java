@@ -119,10 +119,9 @@ public abstract class ServerLevelMixin extends Level implements IServerLevel {
      */
     //? if >= 1.21.4 {
     @Overwrite
-     //?} else {
-    /*@Override
-            *///?}
     public GameRules getGameRules() {
         return worldGameRules.getWorldGameRules();
     }
+    //?}
+
 }
