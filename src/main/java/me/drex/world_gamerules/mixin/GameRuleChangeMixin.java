@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-//? if >= 1.21.11 {
 import net.minecraft.world.level.gamerules.GameRule;
 @Mixin(MinecraftServer.class)
 public abstract class GameRuleChangeMixin {
@@ -24,23 +23,3 @@ public abstract class GameRuleChangeMixin {
         }
     }
 }
-//?} else {
-/*import net.minecraft.world.level.GameRules;
-
-@Mixin(GameRules.Value.class)
-public abstract class GameRuleChangeMixin {
-
-    @Inject(
-            method = "onChanged",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ljava/util/function/BiConsumer;accept(Ljava/lang/Object;Ljava/lang/Object;)V"
-            )
-    )
-    public void onChanged(MinecraftServer minecraftServer, CallbackInfo ci) {
-        for (ServerLevel level : minecraftServer.getAllLevels()) {
-            ((IServerLevel) level).worldGameRules$savedWorldGameRules().setDirty();
-        }
-    }
-}
-*///?}

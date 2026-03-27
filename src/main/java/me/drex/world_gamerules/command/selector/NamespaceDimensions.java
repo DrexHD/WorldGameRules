@@ -20,11 +20,7 @@ public class NamespaceDimensions implements DimensionSelector {
     public Builders builder() {
         RequiredArgumentBuilder<CommandSourceStack, String> second = Commands.argument("namespace", StringArgumentType.word()).suggests((context, builder) -> {
             for (ResourceKey<Level> levelResourceKey : context.getSource().getServer().levelKeys()) {
-                //? if >= 1.21.11 {
                 builder.suggest(levelResourceKey.identifier().getNamespace());
-                //?} else {
-                /*builder.suggest(levelResourceKey.location().getNamespace());
-                *///?}
             }
             return builder.buildFuture();
         });
@@ -33,15 +29,11 @@ public class NamespaceDimensions implements DimensionSelector {
     }
 
     @Override
-    public Collection<ServerLevel> getLevels(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    public Collection<ServerLevel> getLevels(CommandContext<CommandSourceStack> context) {
         String namespace = StringArgumentType.getString(context, "namespace");
         List<ServerLevel> result = new LinkedList<>();
         for (ServerLevel level : context.getSource().getServer().getAllLevels()) {
-            //? if >= 1.21.11 {
             if (level.dimension().identifier().getNamespace().equals(namespace)) {
-            //?} else {
-            /*if (level.dimension().location().getNamespace().equals(namespace)) {
-            *///?}
                 result.add(level);
             }
         }

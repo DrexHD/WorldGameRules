@@ -1,8 +1,8 @@
 import org.jetbrains.changelog.Changelog
 
 plugins {
-    id 'fabric-loom' version '1.15-SNAPSHOT'
-    id "me.modmuss50.mod-publish-plugin" version "0.8.4"
+    id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT'
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 version = "${mod_version}+${minecraft_version}"
@@ -27,18 +27,17 @@ loom {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modImplementation include(fabricApi.module("fabric-command-api-v2", project.fabric_version))
+    implementation include(fabricApi.module("fabric-command-api-v2", project.fabric_version))
     // Handle mods passing a null DataFixTypes to a PersistentState.Type
-    modImplementation include(fabricApi.module("fabric-object-builder-api-v1", project.fabric_version))
-    modImplementation include("me.lucko:fabric-permissions-api:${project.permission_api_version}")
-    modImplementation include("maven.modrinth:message-api:${project.message_api_version}")
-    modImplementation include("eu.pb4:placeholder-api:${project.placeholder_api_version}")
+    implementation include(fabricApi.module("fabric-object-builder-api-v1", project.fabric_version))
+    implementation include("me.lucko:fabric-permissions-api:${project.permission_api_version}")
+    implementation include("maven.modrinth:message-api:${project.message_api_version}")
+    implementation include("eu.pb4:placeholder-api:${project.placeholder_api_version}")
     // Compat
-    modImplementation fabricApi.module("fabric-game-rule-api-v1", project.fabric_version)
-    modCompileOnly("org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}")
+    implementation fabricApi.module("fabric-game-rule-api-v1", project.fabric_version)
+    compileOnly("org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}")
 }
 
 processResources {
@@ -51,7 +50,7 @@ processResources {
 }
 
 publishMods {
-    file = remapJar.archiveFile
+    file = jar.archiveFile
     changelog = fetchChangelog()
     type = STABLE
     displayName = "WorldGameRules ${version.get()}"
