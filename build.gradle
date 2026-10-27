@@ -1,8 +1,8 @@
 import org.jetbrains.changelog.Changelog
 
 plugins {
-    id 'net.fabricmc.fabric-loom' version '1.17-SNAPSHOT'
-    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
+    id 'net.fabricmc.fabric-loom' version '1.18-SNAPSHOT'
+    id "me.modmuss50.mod-publish-plugin" version "2.2.1"
 }
 
 version = "${mod_version}+${minecraft_version}"
@@ -29,14 +29,11 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    implementation include(fabricApi.module("fabric-command-api-v2", project.fabric_version))
-    // Handle mods passing a null DataFixTypes to a PersistentState.Type
-    implementation include(fabricApi.module("fabric-object-builder-api-v1", project.fabric_version))
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     implementation include("me.lucko:fabric-permissions-api:${project.permission_api_version}")
     implementation include("eu.pb4:placeholder-api:${project.placeholder_api_version}")
     implementation include("xyz.nucleoid:server-translations-api:${project.server_translations_api_version}")
     // Compat
-    implementation fabricApi.module("fabric-game-rule-api-v1", project.fabric_version)
     compileOnly("org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}")
 }
 
@@ -60,11 +57,15 @@ publishMods {
         projectId = "Eie2vf4W"
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         minecraftVersions.addAll(project.modrinth_minecraft_versions.split(", "))
+        requires("fabric-api")
     }
     curseforge {
         projectId = "1039751"
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
         minecraftVersions.addAll(project.curseforge_minecraft_versions.split(", "))
+        requires("fabric-api")
+        client = true
+        server = true
     }
     github {
         accessToken = providers.environmentVariable("GITHUB_TOKEN")
