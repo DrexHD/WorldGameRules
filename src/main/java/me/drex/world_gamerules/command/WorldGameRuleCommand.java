@@ -4,11 +4,12 @@ import com.google.common.collect.Lists;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import me.drex.message.api.LocalizedMessage;
 import me.drex.world_gamerules.command.selector.*;
+import me.drex.world_gamerules.util.LocalizedMessage;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -16,6 +17,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.gamerules.GameRule;
 
 import java.util.Collection;
+import java.util.Map;
 
 import static net.minecraft.commands.Commands.literal;
 
@@ -69,22 +71,22 @@ public class WorldGameRuleCommand {
     static <T> int getRule(CommandContext<CommandSourceStack> commandContext, Collection<ServerLevel> levels, GameRule<T> rule) {
         CommandSourceStack src = commandContext.getSource();
         if (levels.isEmpty()) {
-            src.sendFailure(LocalizedMessage.localized("world-gamerules.commands.gamerule.set.empty"));
+            src.sendFailure(LocalizedMessage.localized("world-gamerules.commands.gamerule.set.empty", src));
             return 0;
         }
 
-        MutableComponent list = ComponentUtils.formatList(levels, LocalizedMessage.localized("world-gamerules.commands.gamerule.get.list.separator"), level -> {
+        MutableComponent list = ComponentUtils.formatList(levels, LocalizedMessage.localized("world-gamerules.commands.gamerule.get.list.separator", src), level -> {
             T value = level.getGameRules().get(rule);
-            return LocalizedMessage.builder("world-gamerules.commands.gamerule.get.list.element")
-                .addPlaceholder("value", rule.serialize(value))
-                .addPlaceholder("dimension", level.dimension().identifier().toString())
-                .build();
+            return LocalizedMessage.localized("world-gamerules.commands.gamerule.get.list.element", Map.of(
+                "value", Component.literal(rule.serialize(value)),
+                "dimension", Component.literal(level.dimension().identifier().toString())
+            ), src);
         });
 
-        src.sendSuccess(() -> LocalizedMessage.builder("world-gamerules.commands.gamerule.get")
-            .addPlaceholder("gamerule", rule.id())
-            .addPlaceholder("list", list)
-            .build(), true);
+        src.sendSuccess(() -> LocalizedMessage.localized("world-gamerules.commands.gamerule.get", Map.of(
+            "gamerule", Component.literal(rule.id()),
+            "list", list
+        ), src), true);
 
         T value = commandContext.getSource().getLevel().getGameRules().get(rule);
         return rule.getCommandResult(value);
@@ -93,7 +95,7 @@ public class WorldGameRuleCommand {
     static <T> int setRule(CommandContext<CommandSourceStack> commandContext, Collection<ServerLevel> levels, GameRule<T> rule) {
         CommandSourceStack src = commandContext.getSource();
         if (levels.isEmpty()) {
-            src.sendFailure(LocalizedMessage.localized("world-gamerules.commands.gamerule.set.empty"));
+            src.sendFailure(LocalizedMessage.localized("world-gamerules.commands.gamerule.set.empty", src));
             return 0;
         }
 
@@ -104,11 +106,11 @@ public class WorldGameRuleCommand {
             level.getGameRules().set(rule, parsedValue, commandContext.getSource().getServer());
         }
 
-        src.sendSuccess(() -> LocalizedMessage.builder("world-gamerules.commands.gamerule.set")
-            .addPlaceholder("gamerule", rule.id())
-            .addPlaceholder("value", stringValue)
-            .addPlaceholder("dimensions", levels.size())
-            .build(), true);
+        src.sendSuccess(() -> LocalizedMessage.localized("world-gamerules.commands.gamerule.set", Map.of(
+            "gamerule", Component.literal(rule.id()),
+            "value", Component.literal(stringValue),
+            "dimensions", Component.literal(String.valueOf(levels.size()))
+        ), src), true);
 
         T value = commandContext.getSource().getLevel().getGameRules().get(rule);
         return rule.getCommandResult(value);

@@ -33,8 +33,8 @@ dependencies {
     // Handle mods passing a null DataFixTypes to a PersistentState.Type
     implementation include(fabricApi.module("fabric-object-builder-api-v1", project.fabric_version))
     implementation include("me.lucko:fabric-permissions-api:${project.permission_api_version}")
-    implementation include("maven.modrinth:message-api:${project.message_api_version}")
     implementation include("eu.pb4:placeholder-api:${project.placeholder_api_version}")
+    implementation include("xyz.nucleoid:server-translations-api:${project.server_translations_api_version}")
     // Compat
     implementation fabricApi.module("fabric-game-rule-api-v1", project.fabric_version)
     compileOnly("org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}")
